@@ -1,0 +1,135 @@
+// Prisma schema for Umbono - Offline-First AI Education Engine
+// Engineered by ZAInnovate Technologies (Pty) Ltd - East London, South Africa
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CurriculumType {
+  DBE_CAPS // Department of Basic Education Curriculum and Assessment Policy Statement
+  IEB      // Independent Examinations Board
+}
+
+enum GradeLevel {
+  GRADE_8
+  GRADE_9
+  GRADE_10
+  GRADE_11
+  GRADE_12
+}
+
+enum SouthAfricanLanguage {
+  ISIXHOSA
+  ISIZULU
+  ENGLISH
+  AFRIKAANS
+  SESOTHO
+  SETSWANA
+}
+
+enum SyncStatus {
+  SYNCED
+  PENDING_UPLOAD
+  CONFLICT_RESOLVED
+}
+
+model Student {
+  id              String            @id @default(cuid())
+  email           String?           @unique
+  studentNumber   String            @unique // e.g. "EC-STU-2026-904"
+  fullName        String
+  preferredLang   SouthAfricanLanguage @default(ISIXHOSA)
+  grade           GradeLevel        @default(GRADE_11)
+  schoolName      String            @default("East London High School")
+  district        String            @default("Buffalo City Metro")
+  province        String            @default("Eastern Cape")
+  progressRecords Progress[]
+  assessments     Assessment[]
+  offlineSessions OfflineSession[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Course {
+  id              String            @id @default(cuid())
+  code            String            @unique // e.g. "MATH-G11-CAPS"
+  title           String            // e.g. "Grade 11 Mathematics (CAPS)"
+  subject         String            // Mathematics, Physical Sciences, Life Sciences, etc.
+  grade           GradeLevel
+  curriculum      CurriculumType    @default(DBE_CAPS)
+  description     String
+  totalHours      Int               @default(45)
+  isAvailableOffline Boolean        @default(true)
+  packageSizeBytes Int              @default(45000000) // ~45MB bundled package
+  lessons         Lesson[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Lesson {
+  id              String            @id @default(cuid())
+  orderIndex      Int
+  title           String            // e.g. "Trigonometry: Reduction Formulae & Identities"
+  summary         String
+  contentMarkdown String            @db.Text
+  audioSummaryUrl String?
+  language        SouthAfricanLanguage @default(ENGLISH)
+  availableTranslations SouthAfricanLanguage[]
+  courseId        String
+  course          Course            @relation(fields: [courseId], references: [id])
+  progressList    Progress[]
+  assessments     Assessment[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Progress {
+  id              String            @id @default(cuid())
+  studentId       String
+  student         Student           @relation(fields: [studentId], references: [id])
+  lessonId        String
+  lesson          Lesson            @relation(fields: [lessonId], references: [id])
+  isCompleted     Boolean           @default(false)
+  scorePercent    Float?
+  lastAccessedAt  DateTime          @default(now())
+  syncStatus      SyncStatus        @default(SYNCED)
+  localTimestamp  DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([studentId, lessonId])
+}
+
+model Assessment {
+  id              String            @id @default(cuid())
+  studentId       String
+  student         Student           @relation(fields: [studentId], references: [id])
+  lessonId        String
+  lesson          Lesson            @relation(fields: [lessonId], references: [id])
+  questionTitle   String
+  studentAnswer   String            @db.Text
+  aiFeedback      String?           @db.Text
+  rubricScore     Float?            // 0 - 100%
+  completedOffline Boolean          @default(false)
+  syncStatus      SyncStatus        @default(SYNCED)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model OfflineSession {
+  id              String            @id @default(cuid())
+  studentId       String
+  student         Student           @relation(fields: [studentId], references: [id])
+  deviceFingerprint String
+  sessionDurationSeconds Int        @default(0)
+  packetsQueued   Int               @default(0)
+  lastSyncedAt    DateTime?
+  cellularDataUsedBytes Int         @default(0) // tracks bandwidth saving
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
