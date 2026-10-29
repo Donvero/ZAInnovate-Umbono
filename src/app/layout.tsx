@@ -6,7 +6,7 @@ import {
   WifiOff,
   BookOpen,
   GraduationCap,
-  CloudCheck,
+  Cloud,
   Globe2,
 } from "lucide-react";
 
