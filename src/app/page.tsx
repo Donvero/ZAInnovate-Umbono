@@ -7,7 +7,7 @@ import ProgressBar from "@/components/learning/ProgressBar";
 import {
   Wifi,
   WifiOff,
-  CloudCheck,
+  Cloud,
   Download,
   Sparkles,
   Zap,
