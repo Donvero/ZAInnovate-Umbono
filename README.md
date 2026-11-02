@@ -111,11 +111,41 @@ npm install
 cp .env.example .env
 ```
 
-### 4. Run the development server
+### 4. Run automated vector & ontology test suites
 ```bash
-npm run dev
+npx vitest run
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser. Disconnect your internet connection or use Chrome DevTools "Offline" preset to test the zero-bandwidth offline experience!
+Expected output: **9/9 tests passed (100%)** across:
+- `vector-cosine-retrieval.test.ts` (IndexedDB cosine dot-product similarity, zero-division safeguards, top-k ranking)
+- `multilingual-stem-ontology.test.ts` (CAPS STEM ontology integrity in isiXhosa, Zulu, Afrikaans, and English)
+
+### 5. Build for production
+```bash
+npm run build
+```
+Compiles with static page optimization, offline service worker assets, and zero external font network dependencies.
+
+---
+
+## 💎 Design Taste & Sovereign EdTech Standards
+
+Umbono is engineered according to anti-AI-slop design and craft engineering standards derived from [`Donvero/hallmark`](https://github.com/Donvero/hallmark) and [`Donvero/taste-skill`](https://github.com/Donvero/taste-skill):
+- **The Floor:** WCAG AAA high-contrast readability (Obsidian canvas `#08101C`, Emerald Accent `#10B981`, Statutory Gold `#FFC20E`), large tactile hit targets for low-cost mobile touchscreens, and zero layout shift during offline data indexing.
+- **Quiet Academic Typography:** High-legibility formulas, bilingual glossary term comparisons, and clean mathematical notations.
+- **Data-Sparse Aesthetic:** Color is spent exclusively on pedagogical comprehension (Emerald for mastered STEM concepts, Amber for revision topics).
+- **Zero AI Slop:** No generic AI templates, no placeholder lessons, and no synthetic hallucinated facts. Every syllabus module is mapped strictly to South African DBE CAPS standards.
+
+---
+
+## 📜 Sovereign IP, Forkability & Public View License
+
+This repository is published for **public inspection, educational review, and rural school deployment trials**.
+
+- **Public View & Review:** Public inspection and peer educational verification are permitted.
+- **Forkability & Educational Deployment:** Forking, redistribution, deployment, or commercial/departmental utilization of the Umbono offline vector engine, multilingual ontology, or sync architecture is **strictly subject to prior written approval of the owner**:
+  - **Owner:** Fana Siyasanga Qhawe Mgengo ([@Donvero](https://github.com/Donvero))
+  - **Entity:** ZAinnovate Technologies (Pty) Ltd (Reg: 2025/572318/07)
+  - **Licensing Contact:** `director@zainnovate.co.za` | `legal@zainnovate.co.za`
 
 ---
 
@@ -135,13 +165,15 @@ Open [http://localhost:3000](http://localhost:3000) in your browser. Disconnect 
 
 **ZAInnovate Technologies (Pty) Ltd**  
 - **Registration**: 2025/572318/07  
-- **B-BBEE Status**: Level 1 Contributor (100% Black Youth Owned)  
-- **Headquarters**: East London, Eastern Cape, South Africa  
+- **National Treasury CSD**: MAAA1646894  
+- **B-BBEE Status**: Level 1 Contributor (135% Procurement Spend Recognition)  
+- **Ownership**: 100% Black Youth-Owned Enterprise  
+- **Headquarters**: 14 Abdullah Ibrahim Close, Belgravia Valley, East London, Eastern Cape, 5241  
 - **Mission**: *"Engineering South Africa's Digital Backbone"*  
 - **Email**: `education@zainnovate.co.za` | `contact@zainnovate.co.za`  
 
 ---
 
 <div align="center">
-  <sub>Umbono is sovereign intellectual property engineered by ZAInnovate Technologies (Pty) Ltd. Built with pride in the Eastern Cape, South Africa.</sub>
+  <sub>Umbono is sovereign intellectual property engineered by ZAInnovate Technologies (Pty) Ltd. Copyright © 2025–2026. All sovereign rights reserved. Built with mathematical rigor in East London, South Africa.</sub>
 </div>
