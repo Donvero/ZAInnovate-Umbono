@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   description:
     "Sovereign AI learning platform built for low-bandwidth South African environments. DBE CAPS aligned, multilingual STEM tutoring. Engineered by ZAInnovate Technologies (Pty) Ltd.",
   manifest: "/manifest.json",
+};
+
+export const viewport = {
   themeColor: "#0E1B2E",
 };
 
